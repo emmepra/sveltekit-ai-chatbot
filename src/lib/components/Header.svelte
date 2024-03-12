@@ -8,9 +8,12 @@
 	import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 	import UserMenu from '$lib/components/UserMenu.svelte';
 	import { buttonVariants } from '$lib/components/ui/button';
-	import { IconGitHub, IconSeparator, IconSvelteChat, IconVercel } from '$lib/components/ui/icons';
+	import { IconGitHub, IconHamburger, IconEnlarge, IconPlus, IconSeparator } from '$lib/components/ui/icons';
 	import type { Chat } from '$lib/types';
 	import { cn } from '$lib/utils';
+
+	import { Button } from "$lib/components/ui/button/index.js";
+
 
 	export let chats: Chat[];
 </script>
@@ -29,8 +32,8 @@
 			</Sidebar>
 		{:else}
 			<a href="/" target="_blank" rel="nofollow">
-				<IconSvelteChat class="mr-2 h-6 w-6 dark:hidden" inverted />
-				<IconSvelteChat class="mr-2 hidden h-6 w-6 dark:block" />
+				<!-- <IconSvelteChat class="mr-2 h-6 w-6 dark:hidden" inverted /> -->
+				<!-- <IconSvelteChat class="mr-2 hidden h-6 w-6 dark:block" /> -->
 			</a>
 		{/if}
 		<div class="flex items-center">
@@ -43,16 +46,7 @@
 		</div>
 	</div>
 	<div class="flex items-center justify-end space-x-2">
-		<a
-			target="_blank"
-			href="https://github.com/jianyuan/sveltekit-ai-chatbot"
-			rel="noopener noreferrer"
-			class={cn(buttonVariants({ variant: 'outline' }))}
-		>
-			<IconGitHub />
-			<span class="ml-2 hidden md:flex">GitHub</span>
-		</a>
-		<a
+		<!-- <a
 			href="https://github.com/jianyuan/sveltekit-ai-chatbot"
 			target="_blank"
 			class={cn(buttonVariants())}
@@ -60,6 +54,21 @@
 			<IconVercel class="mr-2" />
 			<span class="hidden sm:block">Deploy to Vercel</span>
 			<span class="sm:hidden">Deploy</span>
+		</a> -->
+
+
+		<a href="/dashboard" class={buttonVariants({ variant: "outline", size: "ixs"})} >
+			<IconHamburger />
+			<!-- <span class="ml-2 hidden md:flex">New Workflow</span> -->
 		</a>
+		<a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
+			<IconPlus />
+			<span class="ml-2 hidden md:flex">New Workflow</span>
+		</a>
+		<a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
+			<IconEnlarge />
+			<span class="ml-2 hidden md:flex">Reader</span>
+		</a>
+
 	</div>
 </header>

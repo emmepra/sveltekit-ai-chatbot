@@ -22,3 +22,5 @@ export { default as IconTrash } from './IconTrash.svelte';
 export { default as IconUser } from './IconUser.svelte';
 export { default as IconUsers } from './IconUsers.svelte';
 export { default as IconVercel } from './IconVercel.svelte';
+export { default as IconEnlarge } from './IconEnlarge.svelte';
+export { default as IconHamburger } from './IconHamburger.svelte';
