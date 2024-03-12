@@ -14,7 +14,8 @@ export const resolvedTheme = derived(theme, ($theme) => {
 		const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
 			? 'dark'
 			: 'light';
-		return systemTheme === 'dark' ? 'dark' : 'light';
+		return 'light';//systemTheme === 'dark' ? 'dark' : 'light';
+		// TODO - change this once ready
 	}
 	return $theme;
 });
