@@ -20,13 +20,16 @@
 		})
 	);
 
-    import * as Sheet from "$lib/components/ui/sheet/index.js";
-    import { Button } from "$lib/components/ui/button/index.js";
-  	import { buttonVariants } from '$lib/components/ui/button';
+  import * as Sheet from "$lib/components/ui/sheet/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
+  import { buttonVariants } from '$lib/components/ui/button';
 
-    import { Input } from "$lib/components/ui/input/index.js";
-    import { Label } from "$lib/components/ui/label/index.js";
-	import IconArrowRight from '$lib/components/ui/icons/IconArrowRight.svelte';
+  import { Input } from "$lib/components/ui/input/index.js";
+  import { Label } from "$lib/components/ui/label/index.js";
+  
+  import IconArrowRight from '$lib/components/ui/icons/IconArrowRight.svelte';
+  import IconDiscord from '$lib/components/ui/icons/IconDiscord.svelte';
+	import IconLetter from '$lib/components/ui/icons/IconLetter.svelte';
 
   import { Textarea } from "$lib/components/ui/textarea/index.js";
 	import { Switch } from '$lib/components/ui/switch';
@@ -101,7 +104,7 @@
   </div> -->
 
 <!-- main box -->
-<main class="flex flex-col min-h-screen bg-red-200">
+<!-- <main class="flex flex-col bg-red-200"> -->
   <!-- find a way to open sidebar from header's hambuger icon -->
   <!-- head section -->
   <Header/>
@@ -114,7 +117,7 @@
   <div class="flex grow justify-center content-center bg-green-400">
 
     <!-- context box -->
-    <div class="flex flex-col max-w-2xl pt-28 pb-40 bg-white">
+    <div class="flex flex-col max-w-2xl pt-28 pb-40 mx-4 bg-white">
       
       <!-- headings -->
       <div class="pb-8 flex flex-col items-center">
@@ -153,6 +156,18 @@
             Do cazzo è annata Giorgia Meloni yesterday?
           </span>
         </button>
+        
+        <!-- interaction buttons -->
+        <div class="flex flex-row space-x-2 pt-4">
+          <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
+            <IconDiscord />
+            <span class="ml-2 text-xs">Talk with us</span>
+          </a>
+          <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
+            <IconLetter />
+            <span class="ml-2 text-xs">Feedback</span>
+          </a>
+        </div>
       </div>
     </div>
     
@@ -164,7 +179,7 @@
   </div>
 
 
-</main>
+<!-- </main> -->
 
 
 

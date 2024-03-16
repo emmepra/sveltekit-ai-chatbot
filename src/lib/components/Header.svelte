@@ -40,7 +40,7 @@
 	<div class="flex items-center justify-center">
 		<!-- workflow title -->
 		<code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-xs font-semibold hidden sm:block">
-			conversation-code
+			the-needl
 		</code>
 	</div>
 
