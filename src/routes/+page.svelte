@@ -1,8 +1,32 @@
 <script lang="ts">
-	// import Chat from '$lib/components/Chat.svelte';
-	import { nanoid } from '$lib/utils';
+	import { browser } from '$app/environment';
+	import Header from '$lib/components/Header.svelte';
 
-	const id = nanoid();
+	import { resolvedTheme } from '$lib/theme';
+	import '@fontsource/inter';
+	import '@fontsource/jetbrains-mono';
+	import '../app.postcss';
+	// import type { LayoutServerData } from './$types';
+	import { onDestroy } from 'svelte';
+
+	export let data;
+	// const { chats } = data;
+
+	onDestroy(
+		resolvedTheme.subscribe((value) => {
+			if (!browser) return;
+			document.documentElement.classList.remove('light', 'dark');
+			document.documentElement.classList.add(value);
+		})
+	);
+
 </script>
 
-<!-- <Chat {id} /> -->
+<svelte:head>
+	<title>the-needl</title>
+</svelte:head>
+
+<Header {data} />
+<main class="flex flex-col flex-1 bg-muted/50">
+	<slot />
+</main>

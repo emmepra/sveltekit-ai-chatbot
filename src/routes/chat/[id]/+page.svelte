@@ -1,9 +1,7 @@
-<script lang="ts">
-	// import Chat from '$lib/components/Chat.svelte';
-	import type { PageServerData } from './$types';
-
-	// export let data: PageServerData;
-	// const { chat } = data;
+<script>
+	/** @type {import('./$types').PageData} */
+	export let data;
 </script>
 
-<!-- <Chat id={chat.id} initialMessages={chat.messages} /> -->
+<h1>{data.title}</h1>
+<div>{@html data.content}</div>

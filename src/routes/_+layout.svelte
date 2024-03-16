@@ -6,11 +6,11 @@
 	import '@fontsource/inter';
 	import '@fontsource/jetbrains-mono';
 	import '../app.postcss';
-	import type { LayoutServerData } from './$types';
+	// import type { LayoutServerData } from './$types';
 	import { onDestroy } from 'svelte';
 
-	export let data: LayoutServerData;
-	const { chats } = data;
+	export let data;
+	// const { chats } = data;
 
 	onDestroy(
 		resolvedTheme.subscribe((value) => {
@@ -19,13 +19,14 @@
 			document.documentElement.classList.add(value);
 		})
 	);
+
 </script>
 
 <svelte:head>
-	<title>SvelteKit AI Chatbot</title>
+	<title>the-needl</title>
 </svelte:head>
 
-<Header {chats} />
+<Header {data} />
 <main class="flex flex-col flex-1 bg-muted/50">
 	<slot />
 </main>
