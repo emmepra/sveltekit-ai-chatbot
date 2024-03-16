@@ -117,7 +117,7 @@
   <div class="flex grow justify-center content-center bg-green-400">
 
     <!-- context box -->
-    <div class="flex flex-col max-w-2xl pt-28 pb-40 mx-4 bg-white">
+    <div class="flex flex-col max-w-2xl justify-center pb-20 mx-4 bg-white">
       
       <!-- headings -->
       <div class="pb-8 flex flex-col items-center">
