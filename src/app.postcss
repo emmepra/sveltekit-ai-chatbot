@@ -125,3 +125,8 @@
 		@apply bg-background text-foreground antialiased;
 	}
 }
+
+/* instruction to include placeholder in div contentEditable forms */
+[contentEditable=true]:empty:not(:focus):before{
+	content:attr(data-text)
+}

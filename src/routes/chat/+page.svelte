@@ -117,7 +117,7 @@
   <div class="flex grow justify-center content-center bg-green-400">
 
     <!-- context box -->
-    <div class="flex flex-col max-w-2xl justify-center pb-20 mx-4 bg-white">
+    <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
       
       <!-- headings -->
       <div class="pb-8 flex flex-col items-center">
@@ -174,8 +174,25 @@
   </div>
   
   <!-- foot section -->
-  <div class="flex-none bg-blue-400">
-    body
+  <div class="flex justify-center content-center pb-4 bg-white">
+    <!-- <div class="w-full max-w-xl px-3 ">
+      <input class="placeholder:italic placeholder:text-slate-500 w-full border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-2 pl-7 pr-3 shadow-sm sm:text-base" placeholder="Ask question / @ for context" type="text" name="search"/>
+    </div> -->
+    
+    <div class="w-full max-w-xl px-3">
+      <!-- <form>   
+        <div class="relative">
+            <div class="absolute inset-y-0 end-5 flex items-center">
+              <IconArrowRight />
+            </div>
+            <input type="text" id="search" class="block w-full placeholder:text-base placeholder:italic placeholder:text-slate-500 border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" placeholder="Ask question / @ for context" required />
+        </div>
+      </form> -->
+
+      <div class="block w-full placeholder:text-base placeholder:italic placeholder:text-slate-500 border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" data-gramm="false" contentEditable="true" aria-owns="quill-mention-list" data-text="Ask question | @ for context">
+      </div>
+
+    </div>
   </div>
 
 
