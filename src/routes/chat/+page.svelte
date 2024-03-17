@@ -26,6 +26,9 @@
 
   import { Input } from "$lib/components/ui/input/index.js";
   import { Label } from "$lib/components/ui/label/index.js";
+  import Badge from '$lib/components/ui/badge/badge.svelte';
+  import { Skeleton } from "$lib/components/ui/skeleton/index.js";
+
   
   import IconArrowRight from '$lib/components/ui/icons/IconArrowRight.svelte';
   import IconEnterKey from '$lib/components/ui/icons/IconEnterKey.svelte';
@@ -51,11 +54,17 @@
   let isDisabled = false;
   let isLoading = false;
 
+  let isNewWorkflow = true;
+  import { crossfade } from 'svelte/transition';
+  const [send, receive] = crossfade(isNewWorkflow);
+
   async function sendUserPrompt(event) {
     if ((event.key === 'Enter' || event.type === 'click') && !isLoading) {
       event.preventDefault();
       isDisabled = true;
       isLoading = true;
+      isNewWorkflow = false;
+
       const element = document.getElementById('user-prompt-container');
       const text = element.textContent;
       element.textContent = '';
@@ -175,77 +184,97 @@
     body
   </div> -->
   
-  <!-- main section -->
-  <div class="flex grow justify-center content-center bg-green-400">
-
-    <!-- context box -->
+  <!-- MAIN SECTION -->
+{#if isNewWorkflow===true}
+  <div id="context-container" class="flex grow justify-center content-center">
     <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
       
-      <!-- headings -->
-      <div class="pb-8 flex flex-col items-center">
-        <h2 class="scroll-m-20 text-3xl font-semibold tracking-wide transition-colors first:mt-0">
-          Find and Digest
-        </h2>
-        <h2 class="scroll-m-20 mt-2 text-3xl font-bold tracking-wide text-orange-600 last:mt-0">
-          Worldwide News
-        </h2>
-      </div>
-        
-      <!-- sample workflows -->
-      <!-- NB: when clicked, span content should be sent via API to backend to start process -->
-      <div class="flex flex-col items-center space-y-3 mt-2">
-        <small class="text-base pb-1 font-medium leading-none">Try a sample workflow</small>
+    
+      <div id="chat-not-started">
+      <!-- chat not started -->
+      <!-- context box -->
+        <!-- headings -->
+        <div class="pb-8 flex flex-col items-center">
+          <h2 class="scroll-m-20 text-3xl font-semibold tracking-wide transition-colors first:mt-0">
+            Find and Digest
+          </h2>
+          <h2 class="scroll-m-20 mt-2 text-3xl font-bold tracking-wide text-orange-600 last:mt-0">
+            Worldwide News
+          </h2>
+        </div>
+          
+        <!-- sample workflows -->
+        <!-- NB: when clicked, span content should be sent via API to backend to start process -->
+        <div class="flex flex-col items-center space-y-3 mt-2">
+          <small class="text-base pb-1 font-medium leading-none">Try a sample workflow</small>
 
-        <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
-          <span id="sourceSpan" class="md:flex text-sm text-orange-700">
-            What recent advancements in renewable energy are impacting global sustainability?
-          </span>
-        </button>
-        
-        <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
-          <span class="md:flex text-sm text-orange-700">
-            How is AI transforming healthcare for patients and research?
-          </span>
-        </button>
+          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+            <span id="sourceSpan" class="md:flex text-sm text-orange-700">
+              What recent advancements in renewable energy are impacting global sustainability?
+            </span>
+          </button>
+          
+          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+            <span class="md:flex text-sm text-orange-700">
+              How is AI transforming healthcare for patients and research?
+            </span>
+          </button>
 
-        <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
-          <span class="md:flex text-sm text-orange-700">
-            What are the most promising startups in the fintech industry?
-          </span>
-        </button>
+          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+            <span class="md:flex text-sm text-orange-700">
+              What are the most promising startups in the fintech industry?
+            </span>
+          </button>
 
-        <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
-          <span class="md:flex text-sm text-orange-700">
-            Do cazzo è annata Giorgia Meloni yesterday?
-          </span>
-        </button>
-        
-        <!-- interaction buttons -->
-        <div class="flex flex-row space-x-2 pt-4">
-          <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
-            <IconDiscord />
-            <span class="ml-2 text-xs">Talk with us</span>
-          </a>
-          <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
-            <IconLetter />
-            <span class="ml-2 text-xs">Feedback</span>
-          </a>
+          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+            <span class="md:flex text-sm text-orange-700">
+              Do cazzo è annata Giorgia Meloni yesterday?
+            </span>
+          </button>
+          
+          <!-- interaction buttons -->
+          <div class="flex flex-row space-x-2 pt-4">
+            <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
+              <IconDiscord />
+              <span class="ml-2 text-xs">Talk with us</span>
+            </a>
+            <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
+              <IconLetter />
+              <span class="ml-2 text-xs">Feedback</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
-
-<!-- display waiting message while processing -->
-    <Toaster position="top-center">
-      <!-- <Jumper slot="loading-icon" />
-      <IconCheck slot="success-icon" />
-      <IconEnlarge slot="error-icon" />
-      <IconGitHub slot="info-icon" />
-      <IconClose slot="warning-icon" /> -->
-    </Toaster>
-
-
   </div>
-  
+
+      {:else}
+      <!-- chat started -->
+      <!-- context box -->
+    <div id="context-container" class="flex grow justify-center content-center">
+      <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
+
+        {#if isLoading}
+          <div class="flex w-full max-w-full items-center space-x-4">
+            <div class="space-y-5">
+              <Skeleton class="h-4 w-[200px] sm:w-[400px]"/>
+              {#each Array(7) as _, index}
+                <Skeleton class="h-4 w-[250px] sm:w-[450px]"/>
+              {/each}
+            </div>
+          </div>
+
+        {/if}
+
+    </div>
+  </div>
+      
+      {/if}
+    
+
+  <!-- display waiting message while processing -->
+<Toaster position="top-center" />
+
   <!-- foot section -->
   <div class="absolute w-full bottom-0 z-10 flex justify-center content-center pb-4 px-3 bg-white">
     <!-- <div class="w-full max-w-xl px-3 ">
@@ -254,33 +283,35 @@
     
     <!-- border only triggered on parent box to allow fully customizable text box (i.e. add icon) -->
 
-
-    <div class="flex flex-row w-full max-w-xl border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
+  <div class="flex flex-col w-full max-w-xl ">
+    <div class="flex flex-row border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
       <div 
+        id="user-prompt-container"
         class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
         data-gramm="false"
         contenteditable="plaintext-only"
         data-text="Ask question | @ for context"
         aria-owns="quill-mention-list"
+        role="textbox"
+        tabindex="0"
         on:focus={() => isFocused = true}
         on:blur={() => isFocused = false}
         on:keydown={sendUserPrompt}
-        role="textbox"
-        tabindex="0"
-        id="user-prompt-container"
         >
-    </div>
-
-    <button class="mr-3 flex items-center" on:click={sendUserPrompt}>
-        <IconEnterKey />
-    </button>
-  </div>
-    <!-- <div class="w-full max-w-xl px-3">
-
-      <div class="block w-full border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" data-gramm="false" contentEditable="true" aria-owns="quill-mention-list" data-text="Ask question | @ for context">
       </div>
 
+      <button class="mr-3 flex items-center" on:click={sendUserPrompt}>
+          <IconEnterKey />
+      </button>
+    </div>
+
+    <!-- <div class="flex mt-2">
+      <Button size="xs" class="bg-orange-300/30">
+      <span class="font-mono text-xs text-orange-700">worldwide</span>
+      </Button>
     </div> -->
+    
+  </div>
   </div>
 
 
