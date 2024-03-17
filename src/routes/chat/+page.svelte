@@ -39,33 +39,59 @@
   let isFocused = false;
   
   import { onMount } from 'svelte';
-  import { DoubleBounce } from 'svelte-loading-spinners';
+  import { Jumper } from 'svelte-loading-spinners';
+	import { Toaster, toast } from 'svelte-sonner';
+	import IconArrowDown from '$lib/components/ui/icons/IconArrowDown.svelte';
+	import IconArrowElbow from '$lib/components/ui/icons/IconArrowElbow.svelte';
+	import IconCheck from '$lib/components/ui/icons/IconCheck.svelte';
+	import IconEnlarge from '$lib/components/ui/icons/IconEnlarge.svelte';
+	import IconGitHub from '$lib/components/ui/icons/IconGitHub.svelte';
+	import IconClose from '$lib/components/ui/icons/IconClose.svelte';
 
   let isDisabled = false;
   let isLoading = false;
 
   async function sendUserPrompt(event) {
-    if (event.key === 'Enter' && !isLoading) {
+    if ((event.key === 'Enter' || event.type === 'click') && !isLoading) {
       event.preventDefault();
       isDisabled = true;
       isLoading = true;
-      const text = (event.target as HTMLElement).textContent;
-      (event.target as HTMLElement).textContent = '';
+      const element = document.getElementById('user-prompt-container');
+      const text = element.textContent;
+      element.textContent = '';
 
-      // // Send a POST request with the div's text content as the payload
-      // const response = await fetch('/your-endpoint', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ text }),
-      // });
+      const waitfor10seconds = new Promise((resolve) => setTimeout(resolve, 5000));
+      toast.promise(waitfor10seconds, {
+        loading: 'Scouring the globe for breaking news...',
+        success: 'Here we are!',
+        error: 'Error'
+      })
+
+      await waitfor10seconds;
+
+    // ---------------------- //
+
+    // Send a POST request with the div's text content as the payload
+    //  const promise = fetch('/your-endpoint', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({ text }),
+    //   });
+
+    //   toast.promise(promise, {
+    //     loading: 'Loading...',
+    //     success: (data) => `Success: ${data.name} has been added!`,
+    //     error: 'Error'
+    //   });
 
       // Handle the response here
-      // ...
+      // const response = await promise;
+      // const data = await response.json();
 
-      // Simulate a delay of 10 seconds
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      // ---------------------- //
+
 
       isDisabled = false;
       isLoading = false;
@@ -208,6 +234,15 @@
       </div>
     </div>
 
+<!-- display waiting message while processing -->
+    <Toaster position="top-center">
+      <!-- <Jumper slot="loading-icon" />
+      <IconCheck slot="success-icon" />
+      <IconEnlarge slot="error-icon" />
+      <IconGitHub slot="info-icon" />
+      <IconClose slot="warning-icon" /> -->
+    </Toaster>
+
 
   </div>
   
@@ -232,18 +267,14 @@
         on:keydown={sendUserPrompt}
         role="textbox"
         tabindex="0"
+        id="user-prompt-container"
         >
     </div>
 
-    {#if isLoading}
-    <DoubleBounce />
-    {/if}
-
-
-    <div class="mr-3 flex items-center">
+    <button class="mr-3 flex items-center" on:click={sendUserPrompt}>
         <IconEnterKey />
-      </div>
-    </div>
+    </button>
+  </div>
     <!-- <div class="w-full max-w-xl px-3">
 
       <div class="block w-full border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" data-gramm="false" contentEditable="true" aria-owns="quill-mention-list" data-text="Ask question | @ for context">
