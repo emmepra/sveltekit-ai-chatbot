@@ -35,6 +35,8 @@
 	import { Switch } from '$lib/components/ui/switch';
 	import { Separator } from '$lib/components/ui/separator';
 
+  let isFocused = false;
+
 </script>
 
 <svelte:head>
@@ -174,25 +176,32 @@
   </div>
   
   <!-- foot section -->
-  <div class="flex justify-center content-center pb-4 bg-white">
+  <div class="absolute w-full bottom-0 z-10 flex justify-center content-center pb-4 px-3 bg-white">
     <!-- <div class="w-full max-w-xl px-3 ">
       <input class="placeholder:italic placeholder:text-slate-500 w-full border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-2 pl-7 pr-3 shadow-sm sm:text-base" placeholder="Ask question / @ for context" type="text" name="search"/>
     </div> -->
     
-    <div class="w-full max-w-xl px-3">
-      <!-- <form>   
-        <div class="relative">
-            <div class="absolute inset-y-0 end-5 flex items-center">
-              <IconArrowRight />
-            </div>
-            <input type="text" id="search" class="block w-full placeholder:text-base placeholder:italic placeholder:text-slate-500 border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" placeholder="Ask question / @ for context" required />
-        </div>
-      </form> -->
+    <!-- border only triggered on parent box to allow fully customizable text box (i.e. add icon) -->
 
-      <div class="block w-full placeholder:text-base placeholder:italic placeholder:text-slate-500 border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" data-gramm="false" contentEditable="true" aria-owns="quill-mention-list" data-text="Ask question | @ for context">
+
+    <div class="flex flex-row w-full max-w-xl border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
+      <div 
+        class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
+        data-gramm="false" contenteditable="plaintext-only" aria-owns="quill-mention-list" data-text="Ask question | @ for context"
+        on:focus={() => isFocused = true}
+        on:blur={() => isFocused = false}
+        >
+    </div>
+    <div class="mr-3 flex items-center">
+        <IconArrowRight />
+      </div>
+    </div>
+    <!-- <div class="w-full max-w-xl px-3">
+
+      <div class="block w-full border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-3 pl-7 pr-3 shadow-sm" data-gramm="false" contentEditable="true" aria-owns="quill-mention-list" data-text="Ask question | @ for context">
       </div>
 
-    </div>
+    </div> -->
   </div>
 
 
