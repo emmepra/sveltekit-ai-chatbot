@@ -135,3 +135,11 @@
 	@apply font-normal
 	/* Add more styles as needed */
 }
+
+[contenteditable=false]:empty:before {
+	content: attr(" ");
+	/* @apply italic; */
+	@apply text-slate-600/50;
+	@apply font-normal
+	/* Add more styles as needed */
+}

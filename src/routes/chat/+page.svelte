@@ -28,6 +28,7 @@
   import { Label } from "$lib/components/ui/label/index.js";
   
   import IconArrowRight from '$lib/components/ui/icons/IconArrowRight.svelte';
+  import IconEnterKey from '$lib/components/ui/icons/IconEnterKey.svelte';
   import IconDiscord from '$lib/components/ui/icons/IconDiscord.svelte';
 	import IconLetter from '$lib/components/ui/icons/IconLetter.svelte';
 
@@ -36,7 +37,40 @@
 	import { Separator } from '$lib/components/ui/separator';
 
   let isFocused = false;
+  
+  import { onMount } from 'svelte';
+  import { DoubleBounce } from 'svelte-loading-spinners';
 
+  let isDisabled = false;
+  let isLoading = false;
+
+  async function sendUserPrompt(event) {
+    if (event.key === 'Enter' && !isLoading) {
+      event.preventDefault();
+      isDisabled = true;
+      isLoading = true;
+      const text = (event.target as HTMLElement).textContent;
+      (event.target as HTMLElement).textContent = '';
+
+      // // Send a POST request with the div's text content as the payload
+      // const response = await fetch('/your-endpoint', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ text }),
+      // });
+
+      // Handle the response here
+      // ...
+
+      // Simulate a delay of 10 seconds
+      await new Promise(resolve => setTimeout(resolve, 10000));
+
+      isDisabled = false;
+      isLoading = false;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -132,11 +166,12 @@
       </div>
         
       <!-- sample workflows -->
+      <!-- NB: when clicked, span content should be sent via API to backend to start process -->
       <div class="flex flex-col items-center space-y-3 mt-2">
         <small class="text-base pb-1 font-medium leading-none">Try a sample workflow</small>
 
         <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
-          <span class="md:flex text-sm text-orange-700">
+          <span id="sourceSpan" class="md:flex text-sm text-orange-700">
             What recent advancements in renewable energy are impacting global sustainability?
           </span>
         </button>
@@ -172,7 +207,8 @@
         </div>
       </div>
     </div>
-    
+
+
   </div>
   
   <!-- foot section -->
@@ -187,13 +223,25 @@
     <div class="flex flex-row w-full max-w-xl border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
       <div 
         class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
-        data-gramm="false" contenteditable="plaintext-only" aria-owns="quill-mention-list" data-text="Ask question | @ for context"
+        data-gramm="false"
+        contenteditable="plaintext-only"
+        data-text="Ask question | @ for context"
+        aria-owns="quill-mention-list"
         on:focus={() => isFocused = true}
         on:blur={() => isFocused = false}
+        on:keydown={sendUserPrompt}
+        role="textbox"
+        tabindex="0"
         >
     </div>
+
+    {#if isLoading}
+    <DoubleBounce />
+    {/if}
+
+
     <div class="mr-3 flex items-center">
-        <IconArrowRight />
+        <IconEnterKey />
       </div>
     </div>
     <!-- <div class="w-full max-w-xl px-3">

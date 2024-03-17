@@ -11,7 +11,7 @@ export const theme = writable<Theme>('system');
 export const resolvedTheme = derived(theme, ($theme) => {
 	if ($theme === 'system') {
 		if (!browser) return 'light';
-		const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+		const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches
 			? 'dark'
 			: 'light';
 		return 'light';//systemTheme === 'dark' ? 'dark' : 'light';
