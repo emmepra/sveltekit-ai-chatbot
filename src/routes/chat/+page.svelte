@@ -51,23 +51,31 @@
 	import IconGitHub from '$lib/components/ui/icons/IconGitHub.svelte';
 	import IconClose from '$lib/components/ui/icons/IconClose.svelte';
 
-  let isDisabled = false;
   let isLoading = false;
-
   let isNewWorkflow = true;
+
+  let messages = [];
+
   import { crossfade } from 'svelte/transition';
+  import { tick } from 'svelte';
+
   const [send, receive] = crossfade(isNewWorkflow);
 
   async function sendUserPrompt(event) {
     if ((event.key === 'Enter' || event.type === 'click') && !isLoading) {
       event.preventDefault();
-      isDisabled = true;
+
       isLoading = true;
       isNewWorkflow = false;
 
       const element = document.getElementById('user-prompt-container');
       const text = element.textContent;
       element.textContent = '';
+
+      // Add the user's message to the list of messages
+      // will be removed when API is connected
+
+      messages = [...messages, { response: text, sources: 'User' }]
 
       const waitfor10seconds = new Promise((resolve) => setTimeout(resolve, 5000));
       toast.promise(waitfor10seconds, {
@@ -76,7 +84,14 @@
         error: 'Error'
       })
 
+      // Scroll to the last message
+      tick().then(() => {
+        const lastMessage = document.querySelector('#chat-box-main-container #chat-box-sub-container:last-child');
+        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
       await waitfor10seconds;
+
 
     // ---------------------- //
 
@@ -101,11 +116,10 @@
 
       // ---------------------- //
 
-
-      isDisabled = false;
       isLoading = false;
     }
   }
+
 </script>
 
 <svelte:head>
@@ -185,7 +199,7 @@
   </div> -->
   
   <!-- MAIN SECTION -->
-{#if !isNewWorkflow}
+{#if isNewWorkflow}
   <div id="context-container" class="flex grow justify-center content-center">
     <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 max-w-xl bg-white">
       <!-- chat not started -->
@@ -248,7 +262,7 @@
       <!-- chat started -->
       <!-- context box -->
       
-      {#if isLoading}
+      <!-- {#if isLoading && isNewWorkflow}
       <div id="context-container" class="flex grow justify-center content-center">
         <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
           <div class="flex w-full max-w-full items-center space-x-4">
@@ -262,7 +276,7 @@
         </div>
       </div>
       
-      {:else}
+      {:else} -->
 
       <!-- CHATBOX -->
       <!-- <div id="context-container" class="flex grow justify-center content-center">
@@ -295,38 +309,29 @@
         </div>
       </div> -->
 
-      <div class="flex flex-col grow bg-blue-400">
+      <div id="chat-box-main-container" class="flex flex-col grow bg-blue-400">
 
-        <div>
-          <div class="flex justify-center h-96 bg-red-400">
-            <div class="bg-purple-400">
-              ciao
-            </div>
-          </div>
+        {#each messages as message (message.response)}
+          <div id="chat-box-sub-container" out:send={{duration: 1000, key: message.response}} in:receive={{duration: 1000, key: message.response}}>
 
-          <div class="flex justify-center h-96 bg-green-400">
-            <div class="bg-orange-400">
-              ciao
+            <div id="chat-box-prompt" class="flex justify-center h-96 bg-red-400">
+              <div class="bg-purple-400">
+                <p>{message.response}</p>
+              </div>
             </div>
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-center h-96 bg-red-400">
-            <div class="bg-purple-400">
-              ciao
-            </div>
-          </div>
 
-          <div class="flex justify-center h-96 bg-green-400">
-            <div class="bg-orange-400">
-              ciao
+            <div id="chat-box-response" class="flex justify-center h-96 bg-green-400">
+              <div class="bg-orange-400">
+                <p>{message.sources}</p>
+              </div>
             </div>
+
           </div>
-        </div>
+        {/each}
         
       </div>
 
-        {/if}
+        <!-- {/if} -->
       
       {/if}
     
@@ -335,7 +340,7 @@
 <Toaster position="top-center" />
 
   <!-- input box section -->
-  <div class="sticky w-full bottom-0 z-10 pb-4 px-3 bg-white">
+  <div id="user-input-box" class="sticky w-full bottom-0 z-10 pb-4 px-3 bg-white">
     
     <!-- border only triggered on parent box to allow fully customizable text box (i.e. add icon) -->
 
