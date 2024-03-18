@@ -185,12 +185,9 @@
   </div> -->
   
   <!-- MAIN SECTION -->
-{#if isNewWorkflow===true}
+{#if !isNewWorkflow}
   <div id="context-container" class="flex grow justify-center content-center">
-    <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
-      
-    
-      <div id="chat-not-started">
+    <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 max-w-xl bg-white">
       <!-- chat not started -->
       <!-- context box -->
         <!-- headings -->
@@ -246,28 +243,90 @@
         </div>
       </div>
     </div>
-  </div>
 
       {:else}
       <!-- chat started -->
       <!-- context box -->
-    <div id="context-container" class="flex grow justify-center content-center">
-      <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
-
-        {#if isLoading}
+      
+      {#if isLoading}
+      <div id="context-container" class="flex grow justify-center content-center">
+        <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
           <div class="flex w-full max-w-full items-center space-x-4">
             <div class="space-y-5">
               <Skeleton class="h-4 w-[200px] sm:w-[400px]"/>
               {#each Array(7) as _, index}
-                <Skeleton class="h-4 w-[250px] sm:w-[450px]"/>
+              <Skeleton class="h-4 w-[250px] sm:w-[450px]"/>
               {/each}
             </div>
           </div>
+        </div>
+      </div>
+      
+      {:else}
+
+      <!-- CHATBOX -->
+      <!-- <div id="context-container" class="flex grow justify-center content-center">
+        
+        <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
+
+          <div class="flex flex-col w-full max-w-xl mt-8">
+
+            <div class="flex bg-blue-400 w-full">
+              ciao
+            </div>
+
+            <div class="flex flex-row border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
+              <div 
+                id="user-prompt-container"
+                class="overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
+                data-gramm="false"
+                contenteditable="plaintext-only"
+                data-text="ciao"
+                aria-owns="quill-mention-list"
+                role="textbox"
+                tabindex="0"
+                on:focus={() => isFocused = true}
+                on:blur={() => isFocused = false}
+                on:keydown={sendUserPrompt}
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="flex flex-col grow bg-blue-400">
+
+        <div>
+          <div class="flex justify-center h-96 bg-red-400">
+            <div class="bg-purple-400">
+              ciao
+            </div>
+          </div>
+
+          <div class="flex justify-center h-96 bg-green-400">
+            <div class="bg-orange-400">
+              ciao
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-center h-96 bg-red-400">
+            <div class="bg-purple-400">
+              ciao
+            </div>
+          </div>
+
+          <div class="flex justify-center h-96 bg-green-400">
+            <div class="bg-orange-400">
+              ciao
+            </div>
+          </div>
+        </div>
+        
+      </div>
 
         {/if}
-
-    </div>
-  </div>
       
       {/if}
     
@@ -275,15 +334,12 @@
   <!-- display waiting message while processing -->
 <Toaster position="top-center" />
 
-  <!-- foot section -->
-  <div class="absolute w-full bottom-0 z-10 flex justify-center content-center pb-4 px-3 bg-white">
-    <!-- <div class="w-full max-w-xl px-3 ">
-      <input class="placeholder:italic placeholder:text-slate-500 w-full border border-slate-300 transition-colors duration-200 ease-in-out focus:border-slate-700 focus:outline-none rounded-md py-2 pl-7 pr-3 shadow-sm sm:text-base" placeholder="Ask question / @ for context" type="text" name="search"/>
-    </div> -->
+  <!-- input box section -->
+  <div class="sticky w-full bottom-0 z-10 pb-4 px-3 bg-white">
     
     <!-- border only triggered on parent box to allow fully customizable text box (i.e. add icon) -->
 
-  <div class="flex flex-col w-full max-w-xl ">
+  <div class="flex flex-col w-full max-w-xl">
     <div class="flex flex-row border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
       <div 
         id="user-prompt-container"
@@ -304,19 +360,9 @@
           <IconEnterKey />
       </button>
     </div>
-
-    <!-- <div class="flex mt-2">
-      <Button size="xs" class="bg-orange-300/30">
-      <span class="font-mono text-xs text-orange-700">worldwide</span>
-      </Button>
-    </div> -->
     
   </div>
   </div>
-
-
-<!-- </main> -->
-
 
 
 <!-- </main> -->
