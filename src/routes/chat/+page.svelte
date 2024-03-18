@@ -68,9 +68,8 @@
       isLoading = true;
       isNewWorkflow = false;
 
-      const element = document.getElementById('user-prompt-container');
-      const text = element.textContent;
-      element.textContent = '';
+      const text = event.target.textContent;
+      event.target.textContent = '';
 
       // Add the user's message to the list of messages
       // will be removed when API is connected
@@ -219,25 +218,25 @@
         <div class="flex flex-col items-center space-y-3 mt-2">
           <small class="text-base pb-1 font-medium leading-none">Try a sample workflow</small>
 
-          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+          <button on:click={sendUserPrompt} class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
             <span id="sourceSpan" class="md:flex text-sm text-orange-700">
               What recent advancements in renewable energy are impacting global sustainability?
             </span>
           </button>
           
-          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+          <button on:click={sendUserPrompt} class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
             <span class="md:flex text-sm text-orange-700">
               How is AI transforming healthcare for patients and research?
             </span>
           </button>
 
-          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+          <button on:click={sendUserPrompt} class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
             <span class="md:flex text-sm text-orange-700">
               What are the most promising startups in the fintech industry?
             </span>
           </button>
 
-          <button class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
+          <button on:click={sendUserPrompt} class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
             <span class="md:flex text-sm text-orange-700">
               Do cazzo è annata Giorgia Meloni yesterday?
             </span>
@@ -340,7 +339,7 @@
 <Toaster position="top-center" />
 
   <!-- input box section -->
-  <div id="user-input-box" class="sticky w-full bottom-0 z-10 pb-4 px-3 bg-white">
+  <div id="user-input-box" class="sticky flex justify-center w-full bottom-0 z-10 pb-4 px-3 bg-white">
     
     <!-- border only triggered on parent box to allow fully customizable text box (i.e. add icon) -->
 
