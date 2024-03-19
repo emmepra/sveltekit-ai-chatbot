@@ -127,12 +127,17 @@
 }
 
 /* instruction to include placeholder in div contentEditable forms */
-/* [contenteditable=true]:empty:before { */
-[contenteditable=plaintext-only]:empty:before {
+#user-prompt-container[contenteditable=plaintext-only]:empty:before {
 	content: attr(data-text);
 	@apply italic;
 	@apply text-slate-600/50;
 	@apply font-normal
+	/* Add more styles as needed */
+}
+#chat-prompt-container[contenteditable=plaintext-only]:empty:before {
+	content: attr(data-text);
+	@apply font-mono;
+	@apply text-slate-600/50;
 	/* Add more styles as needed */
 }
 

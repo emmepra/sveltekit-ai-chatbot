@@ -61,7 +61,7 @@
 
   const [send, receive] = crossfade(isNewWorkflow);
 
-  async function sendUserPrompt(event) {
+  async function sendUserPrompt(event: Event, clearText: boolean=true) {
     if ((event.key === 'Enter' || event.type === 'click') && !isLoading) {
       event.preventDefault();
 
@@ -69,7 +69,10 @@
       isNewWorkflow = false;
 
       const text = event.target.textContent;
-      event.target.textContent = '';
+
+      if (clearText) {
+        event.target.textContent = '';
+      }
 
       // Add the user's message to the list of messages
       // will be removed when API is connected
@@ -198,7 +201,8 @@
   </div> -->
   
   <!-- MAIN SECTION -->
-{#if isNewWorkflow}
+<!-- {#if !isNewWorkflow} -->
+{#if false}
   <div id="context-container" class="flex grow justify-center content-center">
     <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 max-w-xl bg-white">
       <!-- chat not started -->
@@ -308,12 +312,13 @@
         </div>
       </div> -->
 
-      <div id="chat-box-main-container" class="flex flex-col grow bg-blue-400">
+      <div id="chat-box-main-container" class="flex flex-col items-center grow bg-blue-400">
 
-        {#each messages as message (message.response)}
+        <!-- {#each messages as message (message.response)}
           <div id="chat-box-sub-container" out:send={{duration: 1000, key: message.response}} in:receive={{duration: 1000, key: message.response}}>
 
-            <div id="chat-box-prompt" class="flex justify-center h-96 bg-red-400">
+            <div id="chat-box-prompt" class="flex flex-col justify-center h-96 bg-red-400">
+
               <div class="bg-purple-400">
                 <p>{message.response}</p>
               </div>
@@ -326,7 +331,51 @@
             </div>
 
           </div>
-        {/each}
+        {/each} -->
+        <div id="chat-box-sub-container" class="px-3 w-full max-w-2xl">          
+
+          <div id="chat-box-prompt" class="flex flex-col justify-center h-96 bg-red-400">
+
+            <div class="flex bg-slate-300">
+              <div class="bg-red-100">
+                Synthesis
+              </div>
+              <div class="bg-red-700">
+                Findings
+              </div>
+            </div>
+
+            <div class="m-3 border border-slate-300 rounded-md bg-white">
+              <!-- user message -->
+              <!-- <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p> -->
+              <div class="flex flex-row border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
+                <!-- <div 
+                  id="chat-prompt-container"
+                  class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
+                  data-gramm="false"
+                  contenteditable="plaintext-only"
+                  aria-owns="quill-mention-list"
+                  role="textbox"
+                  tabindex="0"
+                  on:focus={() => isFocused = true}
+                  on:blur={() => isFocused = false}
+                  on:keydown={event=> sendUserPrompt(event, false)}
+                  > -->
+                <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p>
+                <!-- </div> -->
+              </div>
+            </div>
+
+          </div>
+
+          <div id="chat-box-response" class="flex justify-center h-96 bg-green-400">
+            <div class="bg-orange-400">
+              ciao
+            </div>
+          </div>
+
+        </div>
+
         
       </div>
 
