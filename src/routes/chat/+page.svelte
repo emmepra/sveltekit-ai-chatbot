@@ -406,15 +406,15 @@
                       <Card.Content
                         class="flex aspect-square items-center justify-center p-6"
                       >
-                        <span class="text-3xl font-semibold">Source {i + 1}</span>
+                        <span class="text-base font-semibold">Source {i + 1}</span>
                       </Card.Content>
                     </Card.Root>
                   </div>
                 </Carousel.Item>
               {/each}
             </Carousel.Content>
-            <Carousel.Previous />
-            <Carousel.Next />
+            <!-- <Carousel.Previous />
+            <Carousel.Next /> -->
           </Carousel.Root>       
         {/if}
       </div>
