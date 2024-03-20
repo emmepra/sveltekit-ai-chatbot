@@ -83,7 +83,8 @@
       // Add the user's message to the list of messages
       // will be removed when API is connected
 
-      messages = [...messages, { response: text, sources: 'User', selectedTab: 'synth'}]
+      // id should be set as message_id from API
+      messages = [...messages, { id: text, question: text, answer: 'Response', sources: 'User', selectedTab: 'synth'}]
 
       const waitfor10seconds = new Promise((resolve) => setTimeout(resolve,5000));
       toast.promise(waitfor10seconds, {
@@ -216,11 +217,11 @@
 <!--  -->
 
   <div id="context-container" class="flex grow justify-center">
-    <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 mt-8 max-w-xl bg-white">
+    <div class="flex flex-col justify-center mx-4 mt-8 max-w-xl bg-white">
       <!-- chat not started -->
       <!-- context box -->
         <!-- headings -->
-        <div class="pb-8 flex flex-col items-center">
+        <div class="mb-8 flex flex-col items-center">
           <h2 class="scroll-m-20 text-3xl font-semibold tracking-wide transition-colors first:mt-0">
             Find and Digest
           </h2>
@@ -231,7 +232,7 @@
           
         <!-- sample workflows -->
         <!-- NB: when clicked, span content should be sent via API to backend to start process -->
-        <div class="flex flex-col items-center space-y-3 mt-2">
+        <div class="flex flex-col items-center space-y-3">
           <small class="text-base pb-1 font-medium leading-none">Try a sample workflow</small>
 
           <button on:click={sendUserPrompt} class="p-2 bg-orange-300/30 transition-colors duration-300 ease-in-out hover:bg-orange-300/60 rounded-md">
@@ -259,7 +260,7 @@
           </button>
           
           <!-- interaction buttons -->
-          <div class="flex flex-row space-x-2 pt-4">
+          <div class="flex flex-row space-x-2">
             <a href="/dashboard" class={buttonVariants({ variant: "outline", size: "xs"})} >
               <IconDiscord />
               <span class="ml-2 text-xs">Talk with us</span>
@@ -327,104 +328,107 @@
 
       <div id="chat-box-main-container" class="flex flex-col items-center grow">
         
-        {#each messages as message (message.response)}
-        <div class="message-title-box px-3 w-full max-w-2xl">
-          
-          <div class="flex flex-col justify-center">
+        {#each messages as message (message.id)}
+          <div class="message-title-box px-3 w-full max-w-2xl last:h-screen">
+            
+            <div class="flex flex-col justify-center">
 
-            <!-- using separator as anchor point for new messages auto scrolling -->
-            <div id="chat-anchor-scroll" class="flex justify-center my-3">
-              <Separator class="w-full max-w-sm bg-slate-200 my-2" />
+              <!-- using separator as anchor point for new messages auto scrolling -->
+              <div id="chat-anchor-scroll" class="flex justify-center my-3">
+                <Separator class="w-full max-w-sm bg-slate-200 my-2" />
+              </div>
+
+              <div class="flex flex-col m-3 space-y-2">
+                <!-- user message -->
+                <!-- <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p> -->
+                <div class="rounded-xl w-fit bg-slate-100 hover:bg-white border border-white hover:border-slate-200">
+                  <p class="px-2 py-1 text-slate-700 font-mono font-medium text-xs">gpt-3.5</p>
+                </div>
+                <div class="flex grow border rounded-lg border-slate-300">
+                  <!-- <div class="flex grow border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg border border-slate-300 bg-white"> -->
+                    <!-- <div 
+                      id="chat-prompt-container"
+                      class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
+                    data-gramm="false"
+                    contenteditable="plaintext-only"
+                    aria-owns="quill-mention-list"
+                    role="textbox"
+                    tabindex="0"
+                    on:focus={() => isFocused = true}
+                    on:blur={() => isFocused = false}
+                    on:keydown={event=> sendUserPrompt(event, false)}
+                    > -->
+                    <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">{message.question}</p>
+                    <!-- </div> -->
+                  </div>
+                  <!-- tabs for switching synth / sources not needed atm 20/03/24 -->
+                  <!-- changing content i.e. text / sources contaners should be placed inside -->
+                  
+                  <div class="flex justify-center pt-1">
+
+                    <Tabs.Root bind:value={message.selectedTab}>
+                      <Tabs.List class="h-max w-max p-2 bg-slate-200/75">
+                        <Tabs.Trigger value="synth">Synthesis</Tabs.Trigger>
+                        <Tabs.Trigger value="sources">Sources</Tabs.Trigger>
+                      </Tabs.List>
+                    </Tabs.Root>
+
+                  </div>
+              </div>
             </div>
 
             <div class="flex flex-col m-3 space-y-2">
-            <!-- tabs for switching synth / sources not needed atm 20/03/24 -->
-            <!-- changing content i.e. text / sources contaners should be placed inside -->
-              <Tabs.Root bind:value={message.selectedTab}>
-                <Tabs.List class="h-max w-max p-2 bg-slate-200/75">
-                  <Tabs.Trigger value="synth">Synthesis</Tabs.Trigger>
-                  <Tabs.Trigger value="sources">Sources</Tabs.Trigger>
-                </Tabs.List>
-              </Tabs.Root>
-              <!-- user message -->
-              <!-- <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p> -->
-              <div class="flex grow border rounded-lg border-slate-300">
-              <!-- <div class="flex grow border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg border border-slate-300 bg-white"> -->
-                <!-- <div 
-                  id="chat-prompt-container"
-                  class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
-                  data-gramm="false"
-                  contenteditable="plaintext-only"
-                  aria-owns="quill-mention-list"
-                  role="textbox"
-                  tabindex="0"
-                  on:focus={() => isFocused = true}
-                  on:blur={() => isFocused = false}
-                  on:keydown={event=> sendUserPrompt(event, false)}
-                  > -->
-                <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">{message.response}</p>
-                <!-- </div> -->
-              </div>
-
-              <div class="rounded-xl w-fit bg-slate-100 hover:bg-white border border-white hover:border-slate-200">
-                <p class="px-2 py-1 text-slate-700 font-mono font-medium text-xs">gpt-3.5</p>
-              </div>
-            </div>
-          </div>
-
-        <div class="flex flex-col mt-5 m-3 space-y-2">
-        {#if message.selectedTab === 'synth'}
-            <div class="space-y-5 text-sm">
-              <p class="">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente molestiae voluptatibus odio distinctio praesentium labore facere voluptatum iure necessitatibus consectetur iste aut accusantium similique unde, aliquid excepturi cumque itaque eligendi.
-              </p>
-              <p>
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam assumenda dolores amet voluptatibus rem dicta non, eveniet ducimus fugiat. Explicabo excepturi iure vitae quidem, inventore qui porro praesentium architecto nisi?
-              </p>
-              <p> 
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
-              </p>
-              <p> 
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
-              </p>
-            </div>
-        {/if}
-        
-        {#if message.selectedTab === 'sources'}
-        <!-- TBD -->
-          <Carousel.Root
-            opts={{
-              align: "start"
-            }}
-            class="w-full"
-          >
-            <Carousel.Content>
-              {#each Array(5) as _, i (i)}
-                <Carousel.Item class="basis-1/3">
-                  <div class="p-1">
-                    <Card.Root>
-                      <Card.Content
-                        class="flex aspect-square items-center justify-center p-6"
-                      >
-                        <span class="text-base font-semibold">Source {i + 1}</span>
-                      </Card.Content>
-                    </Card.Root>
+              {#if message.selectedTab === 'synth'}
+                  <div class="space-y-5 text-sm">
+                    <p class="">
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente molestiae voluptatibus odio distinctio praesentium labore facere voluptatum iure necessitatibus consectetur iste aut accusantium similique unde, aliquid excepturi cumque itaque eligendi.
+                    </p>
+                    <p>
+                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam assumenda dolores amet voluptatibus rem dicta non, eveniet ducimus fugiat. Explicabo excepturi iure vitae quidem, inventore qui porro praesentium architecto nisi?
+                    </p>
+                    <p> 
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
+                    </p>
+                    <p> 
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
+                    </p>
+                    <p>{message.answer}</p>
                   </div>
-                </Carousel.Item>
-              {/each}
-            </Carousel.Content>
-            <!-- <Carousel.Previous />
-            <Carousel.Next /> -->
-          </Carousel.Root>       
-        {/if}
-      </div>
+              {/if}
+            
+              {#if message.selectedTab === 'sources'}
+              <!-- TBD -->
+                <Carousel.Root
+                  opts={{
+                    align: "start"
+                  }}
+                  class="w-full"
+                >
+                  <Carousel.Content>
+                    {#each Array(5) as _, i (i)}
+                      <Carousel.Item class="basis-1/3">
+                        <div class="p-1">
+                          <Card.Root>
+                            <Card.Content
+                              class="flex aspect-square items-center justify-center p-6"
+                            >
+                              <span class="text-base font-semibold">Source {i + 1}</span>
+                            </Card.Content>
+                          </Card.Root>
+                        </div>
+                      </Carousel.Item>
+                    {/each}
+                  </Carousel.Content>
+                  <!-- <Carousel.Previous />
+                  <Carousel.Next /> -->
+                </Carousel.Root>      
 
-
-        </div>
-
-        
+              {/if}
+            </div>
+          
+          </div>
         {/each}
-  </div> 
+      </div> 
 
         <!-- {/if} -->
       
