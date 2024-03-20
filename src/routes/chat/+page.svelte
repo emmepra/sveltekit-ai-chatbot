@@ -57,6 +57,11 @@
 
   let messages = [];
 
+  import { writable } from 'svelte/store';
+
+  // Create a writable store to hold the data-text value
+  const dataText = writable('');
+
   import { crossfade } from 'svelte/transition';
   import { tick } from 'svelte';
 	import IconOpenAi from '$lib/components/ui/icons/IconOpenAI.svelte';
@@ -459,10 +464,11 @@
         on:keydown={sendUserPrompt}
         >
       </div>
-
+      
       <button class="mr-3 flex items-center" on:click={sendUserPrompt}>
           <IconEnterKey />
       </button>
+      
     </div>
     
   </div>
