@@ -26,6 +26,8 @@
 		"nanoid": "^5.0.3",
 		"openai-edge": "^1.2.2",
 		"paneforge": "^0.0.2",
+		"seamless-scroll-polyfill": "^2.3.4",
+		"smoothscroll-polyfill": "^0.4.4",
 		"svelte-autosize": "^1.1.0",
 		"svelte-copy-to-clipboard": "^0.2.5",
 		"svelte-sonner": "^0.3.19",

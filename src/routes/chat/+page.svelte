@@ -37,6 +37,11 @@
 	import { Separator } from '$lib/components/ui/separator';
   import * as Tabs from "$lib/components/ui/tabs";
 
+  import smoothscroll from "smoothscroll-polyfill";
+
+  // kick off the polyfill!
+  smoothscroll.polyfill();
+
 
   let isFocused = false;
   
@@ -89,8 +94,9 @@
       // Scroll to the last message
       tick().then(() => {
         const lastMessage = document.querySelector('#chat-box-main-container > :last-child');
-        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start'});
       });
+
 
       await waitfor10seconds;
 
@@ -313,11 +319,16 @@
       </div> -->
 
       <div id="chat-box-main-container" class="flex flex-col items-center grow">
-
-      {#each messages as message (message.response)}
-        <div class="px-3 w-full max-w-2xl my-2">          
-
+        
+        {#each messages as message (message.response)}
+        <div class="px-3 w-full max-w-2xl">          
+          
           <div class="flex flex-col justify-center bg-red-400">
+
+            <!-- using separator as anchor point for new messages auto scrolling -->
+            <div class="flex justify-center chat-anchor-scroll my-3">
+              <Separator class="w-full max-w-sm bg-black my-1" />
+            </div>
 
             <div class="flex flex-col m-3 space-y-2">
             <!-- tabs for switching synth / sources not needed atm 20/03/24 -->
@@ -363,7 +374,6 @@
 
         </div>
 
-        <Separator class="w-full max-w-sm bg-slate-300" />
         
         {/each}
       </div>
