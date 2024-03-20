@@ -9,9 +9,6 @@
 	// import type { LayoutServerData } from './$types';
 	import { onDestroy } from 'svelte';
 
-	export let data;
-	// const { chats } = data;
-
 	onDestroy(
 		resolvedTheme.subscribe((value) => {
 			if (!browser) return;
@@ -38,6 +35,8 @@
   import { Textarea } from "$lib/components/ui/textarea/index.js";
 	import { Switch } from '$lib/components/ui/switch';
 	import { Separator } from '$lib/components/ui/separator';
+  import * as Tabs from "$lib/components/ui/tabs";
+
 
   let isFocused = false;
   
@@ -58,6 +57,7 @@
 
   import { crossfade } from 'svelte/transition';
   import { tick } from 'svelte';
+	import IconOpenAi from '$lib/components/ui/icons/IconOpenAI.svelte';
 
   const [send, receive] = crossfade(isNewWorkflow);
 
@@ -77,9 +77,9 @@
       // Add the user's message to the list of messages
       // will be removed when API is connected
 
-      messages = [...messages, { response: text, sources: 'User' }]
+      messages = [...messages, { response: text, sources: 'User', selectedTab: 'synth'}]
 
-      const waitfor10seconds = new Promise((resolve) => setTimeout(resolve, 5000));
+      const waitfor10seconds = new Promise((resolve) => setTimeout(resolve,5000));
       toast.promise(waitfor10seconds, {
         loading: 'Scouring the globe for breaking news...',
         success: 'Here we are!',
@@ -88,8 +88,8 @@
 
       // Scroll to the last message
       tick().then(() => {
-        const lastMessage = document.querySelector('#chat-box-main-container #chat-box-sub-container:last-child');
-        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const lastMessage = document.querySelector('#chat-box-main-container > :last-child');
+        lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
       });
 
       await waitfor10seconds;
@@ -312,43 +312,26 @@
         </div>
       </div> -->
 
-      <div id="chat-box-main-container" class="flex flex-col items-center grow bg-blue-400">
+      <div id="chat-box-main-container" class="flex flex-col items-center grow">
 
-        <!-- {#each messages as message (message.response)}
-          <div id="chat-box-sub-container" out:send={{duration: 1000, key: message.response}} in:receive={{duration: 1000, key: message.response}}>
+      {#each messages as message (message.response)}
+        <div class="px-3 w-full max-w-2xl my-2">          
 
-            <div id="chat-box-prompt" class="flex flex-col justify-center h-96 bg-red-400">
+          <div class="flex flex-col justify-center bg-red-400">
 
-              <div class="bg-purple-400">
-                <p>{message.response}</p>
-              </div>
-            </div>
-
-            <div id="chat-box-response" class="flex justify-center h-96 bg-green-400">
-              <div class="bg-orange-400">
-                <p>{message.sources}</p>
-              </div>
-            </div>
-
-          </div>
-        {/each} -->
-        <div id="chat-box-sub-container" class="px-3 w-full max-w-2xl">          
-
-          <div id="chat-box-prompt" class="flex flex-col justify-center h-96 bg-red-400">
-
-            <div class="flex bg-slate-300">
-              <div class="bg-red-100">
-                Synthesis
-              </div>
-              <div class="bg-red-700">
-                Findings
-              </div>
-            </div>
-
-            <div class="m-3 border border-slate-300 rounded-md bg-white">
+            <div class="flex flex-col m-3 space-y-2">
+            <!-- tabs for switching synth / sources not needed atm 20/03/24 -->
+            <!-- changing content i.e. text / sources contaners should be placed inside -->
+              <Tabs.Root bind:value={message.selectedTab}>
+                <Tabs.List class="h-max w-max p-2">
+                  <Tabs.Trigger value="synth">Synthesis</Tabs.Trigger>
+                  <Tabs.Trigger value="sources">Sources</Tabs.Trigger>
+                </Tabs.List>
+              </Tabs.Root>
               <!-- user message -->
               <!-- <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p> -->
-              <div class="flex flex-row border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg">
+              <div class="flex grow border rounded-lg border-slate-300 bg-white">
+              <!-- <div class="flex grow border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg border border-slate-300 bg-white"> -->
                 <!-- <div 
                   id="chat-prompt-container"
                   class="ml-2 overflow-hidden max-w-xl w-full py-3 px-3 outline-none" 
@@ -361,14 +344,18 @@
                   on:blur={() => isFocused = false}
                   on:keydown={event=> sendUserPrompt(event, false)}
                   > -->
-                <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p>
+                <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">{message.response}</p>
                 <!-- </div> -->
+              </div>
+
+              <div class="rounded-lg w-fit hover:bg-slate-200 bg-white">
+                <p class="p-1 text-slate-700 font-mono font-medium text-xs">gpt-3.5</p>
               </div>
             </div>
 
           </div>
 
-          <div id="chat-box-response" class="flex justify-center h-96 bg-green-400">
+          <div class="flex justify-center h-[800px] bg-green-400">
             <div class="bg-orange-400">
               ciao
             </div>
@@ -376,7 +363,9 @@
 
         </div>
 
+        <Separator class="w-full max-w-sm bg-slate-300" />
         
+        {/each}
       </div>
 
         <!-- {/if} -->
