@@ -211,8 +211,12 @@
   <!-- MAIN SECTION -->
 {#if isNewWorkflow}
 
-  <div id="context-container" class="flex grow justify-center content-center">
-    <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 max-w-xl bg-white">
+<!-- TODO -->
+<!-- scrolling on top, deve coprire il separatore. in teoria ogni textbox dovrebbe scrollare fino ad avere il separator on top e lasciando spazio vuoto "dinamico" sotto -->
+<!--  -->
+
+  <div id="context-container" class="flex grow justify-center">
+    <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 mt-8 max-w-xl bg-white">
       <!-- chat not started -->
       <!-- context box -->
         <!-- headings -->
