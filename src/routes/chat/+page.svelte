@@ -37,11 +37,8 @@
 	import { Separator } from '$lib/components/ui/separator';
   import * as Tabs from "$lib/components/ui/tabs";
 
-  import smoothscroll from "smoothscroll-polyfill";
-
-  // kick off the polyfill!
-  smoothscroll.polyfill();
-
+  import * as Carousel from "$lib/components/ui/carousel/index.js";
+  import * as Card from "$lib/components/ui/card/index.js";
 
   let isFocused = false;
   
@@ -70,10 +67,14 @@
     if ((event.key === 'Enter' || event.type === 'click') && !isLoading) {
       event.preventDefault();
 
+      const text = event.target.textContent.trim(); // Trim whitespace
+
+      if (text === '') {
+        return; // Exit if text is empty
+      }
+
       isLoading = true;
       isNewWorkflow = false;
-
-      const text = event.target.textContent;
 
       if (clearText) {
         event.target.textContent = '';
@@ -93,6 +94,7 @@
 
       // Scroll to the last message
       tick().then(() => {
+        // const lastMessage = document.querySelector('#chat-box-main-container #chat-anchor-scroll');
         const lastMessage = document.querySelector('#chat-box-main-container > :last-child');
         lastMessage.scrollIntoView({ behavior: 'smooth', block: 'start'});
       });
@@ -207,8 +209,8 @@
   </div> -->
   
   <!-- MAIN SECTION -->
-<!-- {#if !isNewWorkflow} -->
-{#if false}
+{#if isNewWorkflow}
+
   <div id="context-container" class="flex grow justify-center content-center">
     <div class="flex flex-col justify-center pb-28 sm:pb-40 mx-4 max-w-xl bg-white">
       <!-- chat not started -->
@@ -318,30 +320,31 @@
         </div>
       </div> -->
 
+
       <div id="chat-box-main-container" class="flex flex-col items-center grow">
         
         {#each messages as message (message.response)}
-        <div class="px-3 w-full max-w-2xl">          
+        <div class="message-title-box px-3 w-full max-w-2xl">
           
-          <div class="flex flex-col justify-center bg-red-400">
+          <div class="flex flex-col justify-center">
 
             <!-- using separator as anchor point for new messages auto scrolling -->
-            <div class="flex justify-center chat-anchor-scroll my-3">
-              <Separator class="w-full max-w-sm bg-black my-1" />
+            <div id="chat-anchor-scroll" class="flex justify-center my-3">
+              <Separator class="w-full max-w-sm bg-slate-200 my-2" />
             </div>
 
             <div class="flex flex-col m-3 space-y-2">
             <!-- tabs for switching synth / sources not needed atm 20/03/24 -->
             <!-- changing content i.e. text / sources contaners should be placed inside -->
               <Tabs.Root bind:value={message.selectedTab}>
-                <Tabs.List class="h-max w-max p-2">
+                <Tabs.List class="h-max w-max p-2 bg-slate-200/75">
                   <Tabs.Trigger value="synth">Synthesis</Tabs.Trigger>
                   <Tabs.Trigger value="sources">Sources</Tabs.Trigger>
                 </Tabs.List>
               </Tabs.Root>
               <!-- user message -->
               <!-- <p class="p-2 scroll-m-20 text-xl font-semibold tracking-tight">User input prompt</p> -->
-              <div class="flex grow border rounded-lg border-slate-300 bg-white">
+              <div class="flex grow border rounded-lg border-slate-300">
               <!-- <div class="flex grow border transition-colors duration-200 ease-in-out outline-none {isFocused ? 'border-slate-700' : 'border-slate-300'} rounded-lg border border-slate-300 bg-white"> -->
                 <!-- <div 
                   id="chat-prompt-container"
@@ -359,24 +362,65 @@
                 <!-- </div> -->
               </div>
 
-              <div class="rounded-lg w-fit hover:bg-slate-200 bg-white">
-                <p class="p-1 text-slate-700 font-mono font-medium text-xs">gpt-3.5</p>
+              <div class="rounded-xl w-fit bg-slate-100 hover:bg-white border border-white hover:border-slate-200">
+                <p class="px-2 py-1 text-slate-700 font-mono font-medium text-xs">gpt-3.5</p>
               </div>
             </div>
-
           </div>
 
-          <div class="flex justify-center h-[800px] bg-green-400">
-            <div class="bg-orange-400">
-              ciao
+        <div class="flex flex-col mt-5 m-3 space-y-2">
+        {#if message.selectedTab === 'synth'}
+            <div class="space-y-5 text-sm">
+              <p class="">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente molestiae voluptatibus odio distinctio praesentium labore facere voluptatum iure necessitatibus consectetur iste aut accusantium similique unde, aliquid excepturi cumque itaque eligendi.
+              </p>
+              <p>
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam assumenda dolores amet voluptatibus rem dicta non, eveniet ducimus fugiat. Explicabo excepturi iure vitae quidem, inventore qui porro praesentium architecto nisi?
+              </p>
+              <p> 
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
+              </p>
+              <p> 
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
+              </p>
             </div>
-          </div>
+        {/if}
+        
+        {#if message.selectedTab === 'sources'}
+        <!-- TBD -->
+          <Carousel.Root
+            opts={{
+              align: "start"
+            }}
+            class="w-full"
+          >
+            <Carousel.Content>
+              {#each Array(5) as _, i (i)}
+                <Carousel.Item class="basis-1/3">
+                  <div class="p-1">
+                    <Card.Root>
+                      <Card.Content
+                        class="flex aspect-square items-center justify-center p-6"
+                      >
+                        <span class="text-3xl font-semibold">Source {i + 1}</span>
+                      </Card.Content>
+                    </Card.Root>
+                  </div>
+                </Carousel.Item>
+              {/each}
+            </Carousel.Content>
+            <Carousel.Previous />
+            <Carousel.Next />
+          </Carousel.Root>       
+        {/if}
+      </div>
+
 
         </div>
 
         
         {/each}
-      </div>
+  </div> 
 
         <!-- {/if} -->
       
