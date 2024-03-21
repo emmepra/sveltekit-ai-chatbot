@@ -210,15 +210,16 @@
   <!-- MAIN SECTION -->
 {#if isNewWorkflow}
 
-  <div id="context-container" class="flex flex-col grow justify-center max-w-xl mx-3 bg-black">
+  <div class="flex justify-center grow m-3">
+  <div id="context-container" class="flex flex-col justify-center max-w-xl">
       <!-- chat not started -->
     <!-- context box -->
       <!-- headings -->
     <div class="mb-8 flex flex-col items-center">
-      <h2 class="scroll-m-20 text-3xl font-semibold tracking-wide transition-colors first:mt-0">
+      <h2 class="scroll-m-20 text-4xl font-semibold tracking-wide transition-colors first:mt-0">
         Find and Digest
       </h2>
-      <h2 class="scroll-m-20 mt-2 text-3xl font-bold tracking-wide text-orange-600 last:mt-0">
+      <h2 class="scroll-m-20 mt-2 text-4xl font-bold tracking-wide text-orange-600 last:mt-0">
         Worldwide News
       </h2>
     </div>
@@ -265,6 +266,7 @@
       </div>
     </div>
   </div>
+</div>
 
       {:else}
       <!-- chat started -->
@@ -431,8 +433,7 @@
 <Toaster position="top-center" />
 
   <!-- input box section -->
-  <!-- <div id="user-input-box" class="flex z-50 justify-center w-full pb-4 px-3 bg-white"> -->
-  <div id="user-input-box" class="sticky z-10 flex justify-center w-full bottom-0 pb-4 px-3 bg-white/50">  
+  <div id="user-input-box" class="sticky z-10 flex justify-center w-full bottom-0 pb-4 px-3 bg-white">  
     <!-- border only triggered on parent box to allow fully customizable text box (i.e. add icon) -->
 
     <div class="flex flex-col w-full max-w-xl">
