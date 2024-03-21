@@ -89,7 +89,7 @@
       // will be removed when API is connected
 
       // id should be set as message_id from API
-      messages = [...messages, { id: text, question: text, answer: 'Response', sources: 'User', selectedTab: 'synth'}]
+      messages = [...messages, { id: text, question: text, answer: 'Response', sources: 'User', selecte dTab: 'synth'}]
 
       const waitfor10seconds = new Promise((resolve) => setTimeout(resolve,5000));
       toast.promise(waitfor10seconds, {
@@ -143,69 +143,8 @@
 </svelte:head>
 
 
-<!-- <main class="relative h-screen"> -->
 
-  <!-- <div class="absolute inset-0 flex items-center justify-start">
- <Sheet.Root>
-   <Sheet.Trigger asChild let:builder>
-     <Button builders={[builder]} variant="outline" size="ixs">
-      <IconArrowRight />
-    </Button>
-  </Sheet.Trigger>
-  <Sheet.Content side="left">
-    <Sheet.Header>
-      <Sheet.Title>Edit profile</Sheet.Title>
-      <Sheet.Description>
-        Make changes to your profile here. Click save when you're done.
-      </Sheet.Description>
-    </Sheet.Header>
-    
-    <div class="grid gap-4 py-4">
-      <div class="grid grid-cols-4 items-center gap-4">
-        <Label for="name" class="text-right">Name</Label>
-        <Input id="name" value="Pedro Duarte" class="col-span-3" />
-      </div>
-      <div class="grid grid-cols-4 items-center gap-4">
-        <Label for="username" class="text-right">Username</Label>
-        <Input id="username" value="@peduarte" class="col-span-3" />
-      </div>
-    </div>
-    <Sheet.Footer>
-      <Sheet.Close asChild let:builder>
-        <Button builders={[builder]} type="submit">Save changes</Button>
-      </Sheet.Close>
-    </Sheet.Footer>
-  </Sheet.Content>
-</Sheet.Root>
-</div> -->
-
-
-<!-- <div class="flex flex-col min-h-screen bg-muted/50">
-  <div class="grow">
-    body
-  </div>
-  
-  <div class="flex-none">
-    <Separator class="" />
-    <div class="p-4 justify-center">
-      <form>
-        <div class="grid gap-0">
-          <Textarea class="p-4" placeholder={`Reply name...`} />
-          <div class="flex items-center">
-            <Label for="mute" class="flex items-center gap-2 text-xs font-normal">
-              <Switch id="mute" aria-label="Mute thread" /> Mute this thread
-            </Label>
-            <Button size="sm" class="ml-auto">Send</Button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  </div> -->
-
-
-    <Header/>
+<Header/>
 
   <!-- MAIN SECTION -->
 {#if isNewWorkflow}
