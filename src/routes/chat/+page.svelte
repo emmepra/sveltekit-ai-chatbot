@@ -215,6 +215,13 @@
       <!-- chat not started -->
     <!-- context box -->
       <!-- headings -->
+      
+    <div class="mb-8 flex flex-col items-center">
+      <h2 class="text-orange-400/10 hover:text-orange-400/60 scroll-m-20 text-4xl sm:text-6xl font-bold font-mono tracking-wide transition-colors first:mt-0">
+        &ltthe-needl&gt
+      </h2>
+    </div>
+
     <div class="mb-8 flex flex-col items-center">
       <h2 class="scroll-m-20 text-4xl font-semibold tracking-wide transition-colors first:mt-0">
         Find and Digest
