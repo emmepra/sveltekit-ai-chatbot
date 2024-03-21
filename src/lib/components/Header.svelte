@@ -16,7 +16,7 @@
 
 </script>
 
-<header class="sticky top-0 z-50 flex h-10 w-full shrink-0 items-center justify-between border-b px-2 md:px-4 bg-white">
+<header class="sticky top-0 z-50 flex h-10 w-full shrink-0 items-center justify-between border-b px-2 md:px-4 bg-white/50">
 	<div class="flex items-center space-x-2">
 			<!-- <Sidebar>
 				<SidebarList {chats} />
