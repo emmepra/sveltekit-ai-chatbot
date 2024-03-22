@@ -55,7 +55,11 @@
   let isLoading = false;
   let isNewWorkflow = true;
 
-  let messages = [];
+  let conversation = {
+    id: '',
+    messages: []
+  }
+  // let messages = [];
 
   import { writable } from 'svelte/store';
 
@@ -68,6 +72,40 @@
 
   const [send, receive] = crossfade(isNewWorkflow);
 
+  import { v4 as uuidv4 } from 'uuid';
+
+
+  async function sendPostRequest(text) {
+    const payload = {
+      "messages": [
+        {
+          "role": "user",
+          "content": text
+        }
+      ]
+    };
+
+    try {
+      const response = await fetch('http://176.9.91.180:8008/api/be/v1/query/false', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  }
+
   async function sendUserPrompt(event: Event, clearText: boolean=true) {
     if ((event.key === 'Enter' || event.type === 'click') && !isLoading) {
       event.preventDefault();
@@ -77,6 +115,11 @@
       if (text === '') {
         return; // Exit if text is empty
       }
+      // Generate a unique ID and store it into the conversation object when isNewWorkflow is true
+      if (isNewWorkflow) {
+        conversation.id = uuidv4();
+        isNewWorkflow = false;
+      }
 
       isLoading = true;
       isNewWorkflow = false;
@@ -85,18 +128,42 @@
         event.target.textContent = '';
       }
 
-      // Add the user's message to the list of messages
-      // will be removed when API is connected
+      // Create a temporary message with a unique ID
+      const tmpMessage = { id: uuidv4(), question: text, answer: '', sources: '', selectedTab: 'synth'};
+
+      // Add the temporary message to conversation.messages
+      conversation.messages = [...conversation.messages, tmpMessage];
+
+      // Link the sendPostRequest function to the toast.promise
+      toast.promise(sendPostRequest(text), {
+        loading: 'Scouring the globe for breaking news...',
+        success: (data) => {
+          if (data) {
+            // Find the index of the temporary message in the conversation.messages array
+            const messageIndex = conversation.messages.findIndex(message => message.id === tmpMessage.id);
+
+            // Update the temporary message with the response from the API
+            if (messageIndex > -1) {
+              conversation.messages[messageIndex].answer = data.response;
+              conversation.messages[messageIndex].sources = 'User';
+            }
+          }
+          return 'Here we are!';
+        },
+        error: 'Error'
+      });
+
 
       // id should be set as message_id from API
-      messages = [...messages, { id: text, question: text, answer: 'Response', sources: 'User', selecte dTab: 'synth'}]
+      // conversation.messages = [...conversation.messages, { id: uuidv4(), question: text, answer: 'Response', sources: 'User', selectedTab: 'synth'}]
+      // console.log(conversation);
 
-      const waitfor10seconds = new Promise((resolve) => setTimeout(resolve,5000));
-      toast.promise(waitfor10seconds, {
-        loading: 'Scouring the globe for breaking news...',
-        success: 'Here we are!',
-        error: 'Error'
-      })
+      // const waitfor10seconds = new Promise((resolve) => setTimeout(resolve,5000));
+      // toast.promise(waitfor10seconds, {
+      //   loading: 'Scouring the globe for breaking news...',
+      //   success: 'Here we are!',
+      //   error: 'Error'
+      // })
 
       // Scroll to the last message
       tick().then(() => {
@@ -106,7 +173,7 @@
       });
 
 
-      await waitfor10seconds;
+      // await waitfor10seconds;
 
 
     // ---------------------- //
@@ -147,6 +214,7 @@
 <Header/>
 
   <!-- MAIN SECTION -->
+<!-- {#if false} -->
 {#if isNewWorkflow}
 
   <div class="flex justify-center grow m-3">
@@ -213,12 +281,11 @@
     </div>
   </div>
 </div>
-
-      {:else}
+<!-- {/if} -->
       <!-- chat started -->
       <!-- context box -->
       
-      <!-- {#if isLoading && isNewWorkflow}
+      <!-- {:else if isLoading}
       <div id="context-container" class="flex grow justify-center content-center">
         <div class="flex flex-col justify-center pb-20 mx-4 max-w-xl bg-white">
           <div class="flex w-full max-w-full items-center space-x-4">
@@ -230,9 +297,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       
-      {:else} -->
+      {:else}
 
       <!-- CHATBOX -->
       <!-- <div id="context-container" class="flex grow justify-center content-center">
@@ -268,8 +335,8 @@
 
   <div id="chat-box-main-container" class="flex flex-col items-center grow">
     
-    {#each messages as message (message.id)}
-      <div class="message-title-box px-3 w-full max-w-2xl last:h-screen">
+    {#each conversation.messages as message (message.id)}
+      <div class="message-title-box px-3 w-full max-w-2xl last:h-svh">
         
         <div class="flex flex-col justify-center">
 
@@ -320,18 +387,18 @@
         <div class="flex flex-col m-3 space-y-2">
           {#if message.selectedTab === 'synth'}
               <div class="space-y-5 text-sm">
-                <p class="">
+                <!-- <p class="">
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente molestiae voluptatibus odio distinctio praesentium labore facere voluptatum iure necessitatibus consectetur iste aut accusantium similique unde, aliquid excepturi cumque itaque eligendi.
                 </p>
                 <p>
                   Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam assumenda dolores amet voluptatibus rem dicta non, eveniet ducimus fugiat. Explicabo excepturi iure vitae quidem, inventore qui porro praesentium architecto nisi?
-                </p>
-                <p> 
+                </p> -->
+                <!-- <p> 
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
                 </p>
                 <p> 
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, a ullam. Eligendi expedita ex sunt quisquam error porro quae sint dignissimos, enim commodi soluta similique iure excepturi temporibus dicta sed.
-                </p>
+                </p> -->
                 <p>{message.answer}</p>
               </div>
           {/if}
