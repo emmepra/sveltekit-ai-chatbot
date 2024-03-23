@@ -74,7 +74,9 @@
 
   import { v4 as uuidv4 } from 'uuid';
 
-
+  /** @type {import('./$types').PageData} */
+  export let data;
+  
   async function sendPostRequest(text) {
     const payload = {
       "messages": [
@@ -86,20 +88,20 @@
     };
 
     try {
-      const response = await fetch('http://176.9.91.180:8008/api/be/v1/query/false', {
+      const response = await fetch(`${data.backend_endpoint}/api/be/v1/query/false`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      return data;
+      const resp = await response.json();
+      return resp;
     } catch (error) {
       console.error('Error:', error);
       throw error;
